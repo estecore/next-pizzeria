@@ -16,7 +16,7 @@ export const Header = ({ className }: { className?: string }) => {
           <div>
             <h1 className="text-2xl uppercase font-black">Next Pizza</h1>
             <p className="text-sm text-gray-400 leading-3">
-              вкусней уже некуда
+              it couldn`t be tastier
             </p>
           </div>
         </div>

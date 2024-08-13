@@ -11,9 +11,9 @@ export const SortPopup = ({ className }: { className?: string }) => {
       )}
     >
       <ArrowUpDown size={16} />
-      <b>Сортировка:</b>
+      <b>Sort by:</b>
 
-      <b className="text-primary">популярное</b>
+      <b className="text-primary">popularity</b>
     </div>
   );
 };
