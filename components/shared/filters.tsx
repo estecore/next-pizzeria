@@ -1,6 +1,11 @@
 import { Input } from "../ui/index";
 
-import { FilterCheckbox, RangeSlider, Title } from "./index";
+import {
+  CheckboxFiltersGroup,
+  FilterCheckbox,
+  RangeSlider,
+  Title,
+} from "./index";
 
 export const Filters = ({ className }: { className?: string }) => {
   return (
@@ -31,6 +36,84 @@ export const Filters = ({ className }: { className?: string }) => {
 
         <RangeSlider min={0} max={1000} step={10} value={[0, 1000]} />
       </div>
+
+      <CheckboxFiltersGroup
+        className="mt-5 "
+        title="Categories"
+        limit={6}
+        defaultItems={[
+          {
+            text: "Cheese sauce1",
+            value: "1",
+          },
+          {
+            text: "Cheese sauce2",
+            value: "2",
+          },
+          {
+            text: "Cheese sauce3",
+            value: "3",
+          },
+          {
+            text: "Cheese sauce4",
+            value: "4",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+        ]}
+        items={[
+          {
+            text: "Cheese sauce1",
+            value: "1",
+          },
+          {
+            text: "Cheese sauce2",
+            value: "2",
+          },
+          {
+            text: "Cheese sauce3",
+            value: "3",
+          },
+          {
+            text: "Cheese sauce4",
+            value: "4",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+          {
+            text: "Cheese sauce5",
+            value: "5",
+          },
+        ]}
+      />
     </div>
   );
 };

@@ -7,3 +7,4 @@ export { TopBar } from "./topBar";
 export { Filters } from "./filters";
 export { FilterCheckbox } from "./filterCheckbox";
 export { RangeSlider } from "./rangeSlider";
+export { CheckboxFiltersGroup } from "./checkboxFiltersGroup";

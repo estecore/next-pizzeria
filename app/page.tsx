@@ -10,12 +10,9 @@ export default function Home() {
 
       <Container className="mt-10 pb-14">
         <div className="flex gap-[60px]">
-          {/* Filter */}
           <div className="w-[250px]">
             <Filters />
           </div>
-
-          {/* Products */}
 
           <div className="flex-1">
             <div className="flex flex-col gap-16">Products list</div>
