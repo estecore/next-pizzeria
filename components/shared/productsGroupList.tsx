@@ -1,55 +1,53 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useIntersection } from "react-use";
 
 import { cn } from "@/lib/utils";
 
 import { Title, ProductCard } from "./index";
 
+import { useCategoryStore } from "@/store/category";
+
 export const ProductsGroupList = ({
   title,
   items,
-  categoryId,
   listClassName,
+  categoryId,
   className,
 }: {
   title: string;
   items: any[];
-  categoryId: string;
   listClassName?: string;
+  categoryId: number;
   className?: string;
 }) => {
-  const setActiveId = useCategoryStore((state) => state.setActiveId);
+  const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
   const intersectionRef = useRef(null);
   const intersection = useIntersection(intersectionRef, {
-    threshold: 0.4,
+    threshold: 0.3,
   });
 
   useEffect(() => {
     if (intersection?.isIntersecting) {
-      setActiveId(categoryId);
+      setActiveCategoryId(categoryId);
     }
-  }, [intersection?.isIntersecting]);
+  }, [categoryId, intersection?.isIntersecting, setActiveCategoryId]);
 
   return (
-    <div className={className} id={title}>
+    <div className={className} id={title} ref={intersectionRef}>
       <Title text={title} size="lg" className="font-extrabold mb-5" />
-      <div
-        ref={intersectionRef}
-        className={cn("grid grid-cols-3 gap-[50px]", listClassName)}
-      >
-        {items
-          .filter((product) => product.items.length > 0)
-          .map((product, i) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              imageUrl={product.imageUrl}
-              price={product.items[0].price}
-            />
-          ))}
+
+      <div className={cn("grid grid-cols-3 gap-[50px]", listClassName)}>
+        {items.map((product, i) => (
+          <ProductCard
+            key={i}
+            id={product.id}
+            name={product.name}
+            price={product.price}
+            imageUrl={product.imageUrl}
+          />
+        ))}
       </div>
     </div>
   );

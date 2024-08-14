@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "Next Pizza | Home",
   description: "Next Pizza created by Estecore",
   icons: {
-    icon: "/favicon.png",
+    icon: "/logo.png",
   },
 };
 
