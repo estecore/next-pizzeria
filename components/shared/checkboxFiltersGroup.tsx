@@ -25,19 +25,19 @@ export const CheckboxFiltersGroup = ({
   defualtValue = [],
   className,
   onClickCheckbox,
-  selectedIds,
+  selected,
   name,
 }: {
   title: string;
   items: item[];
-  defaultItems: item[];
+  defaultItems?: item[];
   limit?: number;
   loading?: boolean;
   searchInputPlaceholder?: string;
   defualtValue?: string[];
   className?: string;
   onClickCheckbox?: (id: string) => void;
-  selectedIds?: Set<string>;
+  selected?: Set<string>;
   name?: string;
 }) => {
   const [showAll, setShowAll] = useState<boolean>(false);
@@ -51,7 +51,7 @@ export const CheckboxFiltersGroup = ({
     ? items.filter((item) =>
         item.text.toLowerCase().includes(searchValue.toLowerCase())
       )
-    : defaultItems.slice(0, limit);
+    : (defaultItems || items).slice(0, limit);
 
   if (loading) {
     return (
@@ -90,7 +90,7 @@ export const CheckboxFiltersGroup = ({
             text={item.text}
             value={item.value}
             endAdornment={item.endAdornment}
-            checked={selectedIds?.has(item.value)}
+            checked={selected?.has(item.value)}
             onCheckedChange={() => onClickCheckbox?.(item.value)}
             name={name}
           />

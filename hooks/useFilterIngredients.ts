@@ -8,13 +8,13 @@ import { Api } from "@/services/apiClient";
 export const useFilterIngredients = (): {
   ingredients: Ingredient[];
   loading: boolean;
-  selectedIds: Set<string>;
+  selectedIngredients: Set<string>;
   onAddId: (id: string) => void;
 } => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [selectedIds, { toggle }] = useSet(new Set<string>([]));
+  const [selectedIngredients, { toggle }] = useSet(new Set<string>([]));
 
   useEffect(() => {
     async function fetchIngredients() {
@@ -32,5 +32,5 @@ export const useFilterIngredients = (): {
     fetchIngredients();
   }, []);
 
-  return { ingredients, loading, selectedIds, onAddId: toggle };
+  return { ingredients, loading, selectedIngredients, onAddId: toggle };
 };
