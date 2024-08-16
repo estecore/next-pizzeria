@@ -32,11 +32,13 @@ export const SearchInput = ({ className }: { className?: string }) => {
   });
 
   useDebounce(
-    () => {
-      Api.products
-        .search(searchQuery)
-        .then((items) => setProducts(items))
-        .catch(() => setProducts([]));
+    async () => {
+      try {
+        const products = await Api.products.search(searchQuery);
+        setProducts(products);
+      } catch (error) {
+        console.log(error);
+      }
     },
     250,
     [searchQuery]

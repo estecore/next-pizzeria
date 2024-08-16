@@ -1,3 +1,7 @@
+"use client";
+
+import { useFilterIngredients } from "@/hooks/useFilterIngredients";
+
 import { Input } from "../ui/index";
 
 import {
@@ -8,6 +12,13 @@ import {
 } from "./index";
 
 export const Filters = ({ className }: { className?: string }) => {
+  const { ingredients, loading, selectedIds, onAddId } = useFilterIngredients();
+
+  const items = ingredients.map((ingredient) => ({
+    value: String(ingredient.id),
+    text: ingredient.name,
+  }));
+
   return (
     <div className={className}>
       <Title
@@ -17,8 +28,8 @@ export const Filters = ({ className }: { className?: string }) => {
       />
 
       <div className="flex flex-col gap-4">
-        <FilterCheckbox text="Can be collected" value="1" />
-        <FilterCheckbox text="New" value="2" />
+        <FilterCheckbox name="type1" text="Can be collected" value="1" />
+        <FilterCheckbox name="type2" text="New" value="2" />
       </div>
 
       <div className="mt-5 border-y border-y-neutral-100 py-6 pb-7">
@@ -39,80 +50,14 @@ export const Filters = ({ className }: { className?: string }) => {
 
       <CheckboxFiltersGroup
         className="mt-5 "
-        title="Categories"
+        title="Ingredients"
         limit={6}
-        defaultItems={[
-          {
-            text: "Cheese sauce1",
-            value: "1",
-          },
-          {
-            text: "Cheese sauce2",
-            value: "2",
-          },
-          {
-            text: "Cheese sauce3",
-            value: "3",
-          },
-          {
-            text: "Cheese sauce4",
-            value: "4",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-        ]}
-        items={[
-          {
-            text: "Cheese sauce1",
-            value: "1",
-          },
-          {
-            text: "Cheese sauce2",
-            value: "2",
-          },
-          {
-            text: "Cheese sauce3",
-            value: "3",
-          },
-          {
-            text: "Cheese sauce4",
-            value: "4",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-          {
-            text: "Cheese sauce5",
-            value: "5",
-          },
-        ]}
+        loading={loading}
+        defaultItems={items.slice(0, 6)}
+        items={items}
+        onClickCheckbox={onAddId}
+        selectedIds={selectedIds}
+        name="ingredients"
       />
     </div>
   );
