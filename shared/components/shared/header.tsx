@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { ArrowRight, ShoppingCart, User } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 import { Container, SearchInput } from "./index";
 import { Button } from "../ui";

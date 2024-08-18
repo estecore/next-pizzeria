@@ -1,16 +1,20 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 import { ProductImage, Title } from "./index";
 import { Button } from "../ui";
 
-export const ChooseProductForm = ({
+export const ChoosePizzaForm = ({
   name,
+  items,
   imageUrl,
+  ingredients,
   onClickAdd,
   className,
 }: {
   imageUrl: string;
   name: string;
+  ingredients: any[];
+  items?: any[];
   onClickAdd?: VoidFunction;
   className?: string;
 }) => {
@@ -23,7 +27,7 @@ export const ChooseProductForm = ({
         imageUrl={imageUrl}
         alt={name}
         size={30}
-        isPizzaForm={false}
+        isPizzaForm={true}
       />
 
       <div className="w-[490px] bg-[#FCFCFC] p-7">

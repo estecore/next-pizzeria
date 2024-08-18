@@ -1,6 +1,6 @@
 import { Category } from "@prisma/client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 import { Categories, Container, SortPopup } from "./index";
 

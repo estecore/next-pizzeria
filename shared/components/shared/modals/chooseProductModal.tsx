@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 import { ProductWithRelations } from "@/@types/prisma";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
 import { ChoosePizzaForm, ChooseProductForm } from "../index";
 
 export const ChooseProductModal = ({

@@ -7,7 +7,7 @@ import {
   GroupVariants,
   ProductImage,
   Title,
-} from "@/components/shared";
+} from "@/shared/components/shared";
 
 const ProductPage = async ({ params: { id } }: { params: { id: string } }) => {
   const product = await prisma.product.findFirst({ where: { id: Number(id) } });

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Ingredient } from "@prisma/client";
 
-import { Api } from "@/services/apiClient";
+import { Api } from "@/shared/services/apiClient";
 
 export const useIngredients = () => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);

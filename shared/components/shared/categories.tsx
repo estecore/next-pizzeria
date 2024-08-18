@@ -2,9 +2,9 @@
 
 import { Category } from "@prisma/client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
-import { useCategoryStore } from "@/store/category";
+import { useCategoryStore } from "@/shared/store/category";
 
 export const Categories = ({
   className,

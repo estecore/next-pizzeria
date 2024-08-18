@@ -3,11 +3,11 @@ import Image from "next/image";
 
 import { Plus } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 import { Title } from "./index";
 
-import { Button } from "@/components/ui/index";
+import { Button } from "@/shared/components/ui/index";
 
 export const ProductCard = ({
   id,

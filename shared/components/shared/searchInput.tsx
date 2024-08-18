@@ -10,9 +10,9 @@ import Image from "next/image";
 
 import { Product } from "@prisma/client";
 
-import { Api } from "@/services/apiClient";
+import { Api } from "@/shared/services/apiClient";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export const SearchInput = ({ className }: { className?: string }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");

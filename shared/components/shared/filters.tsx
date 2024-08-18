@@ -1,6 +1,6 @@
 "use client";
 
-import { useFilters, useIngredients, useQueryFilters } from "@/hooks";
+import { useFilters, useIngredients, useQueryFilters } from "@/shared/hooks";
 
 import { Input } from "../ui/index";
 
