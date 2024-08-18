@@ -4,7 +4,7 @@ import { Nunito } from "next/font/google";
 
 import { Header } from "@/components/shared/header";
 
-import "./globals.css";
+import "@/styles/globals.css";
 
 const nunito = Nunito({
   subsets: ["cyrillic"],
