@@ -12,13 +12,16 @@ export const metadata: Metadata = {
 
 const HomeLayout = ({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) => {
   return (
     <>
       <Header />
       <main className="min-h-screen">{children}</main>
+      {modal}
     </>
   );
 };
