@@ -38,7 +38,7 @@
     "next-auth": "^4.24.7",
     "nextjs-toploader": "^1.6.12",
     "prisma": "^5.13.0",
-    "qs": "^6.12.1",
+    "qs": "^6.13.0",
     "react": "^18",
     "react-dadata": "^2.23.1",
     "react-dom": "^18",
