@@ -14,3 +14,5 @@ export { SearchInput } from "./searchInput";
 export { ProductImage } from "./productImage";
 export { GroupVariants } from "./groupVariants";
 export { ChooseProductModal } from "./modals";
+export { ChooseProductForm } from "./chooseProductForm";
+export { ChoosePizzaForm } from "./choosePizzaForm";
