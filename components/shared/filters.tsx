@@ -1,45 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useSet } from "react-use";
-
-import { useFilterIngredients } from "@/hooks/useFilterIngredients";
+import { useFilters, useIngredients, useQueryFilters } from "@/hooks";
 
 import { Input } from "../ui/index";
 
-import {
-  CheckboxFiltersGroup,
-  FilterCheckbox,
-  RangeSlider,
-  Title,
-} from "./index";
+import { CheckboxFiltersGroup, RangeSlider, Title } from "./index";
 
 export const Filters = ({ className }: { className?: string }) => {
-  const { ingredients, loading, selectedIngredients, onAddId } =
-    useFilterIngredients();
-  const [prices, setPrice] = useState<{
-    priceFrom: number;
-    priceTo: number;
-  }>({
-    priceFrom: 0,
-    priceTo: 1000,
-  });
+  const { ingredients, loading } = useIngredients();
+  const filters = useFilters();
 
-  const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
-  const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(
-    new Set<string>([])
-  );
+  useQueryFilters(filters);
 
   const items = ingredients.map((ingredient) => ({
     value: String(ingredient.id),
     text: ingredient.name,
   }));
 
-  const updatePrice = (name: "priceFrom" | "priceTo", value: number) => {
-    setPrice({
-      ...prices,
-      [name]: value,
-    });
+  const updatePrices = (prices: number[]) => {
+    filters.setPrice("priceFrom", prices[0]);
+    filters.setPrice("priceTo", prices[1]);
   };
 
   return (
@@ -54,8 +34,8 @@ export const Filters = ({ className }: { className?: string }) => {
         title="Type of dough"
         name="pizzaTypes"
         className="mb-5"
-        onClickCheckbox={togglePizzaTypes}
-        selected={pizzaTypes}
+        onClickCheckbox={filters.setPizzaTypes}
+        selected={filters.pizzaTypes}
         items={[
           { text: "Thin", value: "1" },
           { text: "Traditional", value: "2" },
@@ -66,8 +46,8 @@ export const Filters = ({ className }: { className?: string }) => {
         title="Sizes"
         name="sizes"
         className="mb-5"
-        onClickCheckbox={toggleSizes}
-        selected={sizes}
+        onClickCheckbox={filters.setSizes}
+        selected={filters.sizes}
         items={[
           { text: "20 sm", value: "20" },
           { text: "30 sm", value: "30" },
@@ -83,16 +63,20 @@ export const Filters = ({ className }: { className?: string }) => {
             placeholder="0"
             min={0}
             max={1000}
-            value={String(prices.priceFrom)}
-            onChange={(e) => updatePrice("priceFrom", Number(e.target.value))}
+            value={String(filters.prices.priceFrom)}
+            onChange={(e) =>
+              filters.setPrice("priceFrom", Number(e.target.value))
+            }
           />
           <Input
             type="number"
             placeholder="1000"
             min={100}
             max={1000}
-            value={String(prices.priceTo)}
-            onChange={(e) => updatePrice("priceTo", Number(e.target.value))}
+            value={String(filters.prices.priceTo)}
+            onChange={(e) =>
+              filters.setPrice("priceTo", Number(e.target.value))
+            }
           />
         </div>
 
@@ -100,10 +84,11 @@ export const Filters = ({ className }: { className?: string }) => {
           min={0}
           max={1000}
           step={10}
-          value={[prices.priceFrom, prices.priceTo]}
-          onValueChange={([priceFrom, priceTo]) =>
-            setPrice({ priceFrom, priceTo })
-          }
+          value={[
+            filters.prices.priceFrom || 0,
+            filters.prices.priceTo || 1000,
+          ]}
+          onValueChange={updatePrices}
         />
       </div>
 
@@ -114,8 +99,8 @@ export const Filters = ({ className }: { className?: string }) => {
         loading={loading}
         defaultItems={items.slice(0, 6)}
         items={items}
-        onClickCheckbox={onAddId}
-        selected={selectedIngredients}
+        onClickCheckbox={filters.setSelectedIngredients}
+        selected={filters.selectedIngredients}
         name="ingredients"
       />
     </div>
