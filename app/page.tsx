@@ -8,7 +8,7 @@ import {
   TopBar,
 } from "@/components/shared";
 
-export default async function Home() {
+const Home = async () => {
   const categories = prisma.category.findMany({
     include: {
       products: {
@@ -56,4 +56,6 @@ export default async function Home() {
       </Container>
     </>
   );
-}
+};
+
+export default Home;
