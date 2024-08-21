@@ -1,44 +1,107 @@
-import { cn } from "@/shared/lib/utils";
+"use client";
 
-import { ProductImage, Title } from "./index";
+import { cn, getPizzaDetails } from "@/shared/lib/";
+
+import { Ingredient, ProductItem } from "@prisma/client";
+
+import {
+  mapPizzaType,
+  PizzaSize,
+  PizzaType,
+  pizzaTypes,
+} from "@/shared/constants/pizza";
+
+import { GroupVariants, IngredientItem, ProductImage, Title } from "./index";
 import { Button } from "../ui";
+import { usePizzaOptions } from "@/shared/hooks";
 
 export const ChoosePizzaForm = ({
   name,
   items,
   imageUrl,
   ingredients,
-  onClickAdd,
+  onClickAddCart,
   className,
 }: {
   imageUrl: string;
   name: string;
-  ingredients: any[];
-  items?: any[];
-  onClickAdd?: VoidFunction;
+  ingredients: Ingredient[];
+  items: ProductItem[];
+  onClickAddCart?: VoidFunction;
   className?: string;
 }) => {
-  const textDetaills =
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, dignissimos.";
-  const totalPrice = "156";
+  const {
+    size,
+    type,
+    availableSizes,
+    selectedIngredients,
+    setSize,
+    setType,
+    addIngredient,
+  } = usePizzaOptions(items);
+
+  const { textDetaills, totalPrice } = getPizzaDetails(
+    items,
+    ingredients,
+    size,
+    type,
+    selectedIngredients
+  );
+
+  const handleClickAdd = async () => {
+    try {
+      onClickAddCart?.();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={cn(className, "flex flex-1")}>
       <ProductImage
         imageUrl={imageUrl}
         alt={name}
-        size={30}
+        size={size}
         isPizzaForm={true}
       />
 
-      <div className="w-[490px] bg-[#FCFCFC] p-7">
+      <div className="flex flex-col w-[490px] bg-[#FCFCFC] p-7">
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
         <p className="text-gray-400">{textDetaills}</p>
 
+        <div className="flex flex-col gap-4 mt-5">
+          <GroupVariants
+            items={availableSizes}
+            selectedValue={String(size)}
+            onClick={(value) => setSize(Number(value) as PizzaSize)}
+          />
+          <GroupVariants
+            items={pizzaTypes}
+            selectedValue={String(type)}
+            onClick={(value) => setType(Number(value) as PizzaType)}
+          />
+        </div>
+
+        <div className="bg-gray-50 p-5 rounded-md h-[380px] overflow-auto scrollbar my-3">
+          <div className="grid grid-cols-3 gap-3">
+            {ingredients.map((ingredient) => (
+              <IngredientItem
+                key={ingredient.id}
+                imageUrl={ingredient.imageUrl}
+                name={ingredient.name}
+                price={ingredient.price}
+                active={selectedIngredients.has(ingredient.id)}
+                onClick={() => addIngredient(ingredient.id)}
+              />
+            ))}
+          </div>
+        </div>
+
         <Button
           //   loading={loading}
-          //   onClick={handleClickAdd}
-          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
+          onClick={handleClickAdd}
+          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-auto"
         >
           Add to cart - {totalPrice} ₽
         </Button>
