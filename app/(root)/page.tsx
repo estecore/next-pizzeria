@@ -6,7 +6,7 @@ import {
   ProductsGroupList,
   Title,
   TopBar,
-} from "@/components/shared";
+} from "@/shared/components/shared";
 
 const Home = async () => {
   const categories = prisma.category.findMany({
