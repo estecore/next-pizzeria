@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { ArrowRight } from "lucide-react";
@@ -11,6 +13,9 @@ import {
   SheetFooter,
   Button,
 } from "@/shared/components/ui";
+import { CartDrawerItem } from "./cartDrawerItem";
+
+import { getCartItemDetails } from "@/shared/lib";
 
 const items = [1, 1, 1];
 const totalAmount = 666;
@@ -33,7 +38,19 @@ export const CartDrawer = ({
           </SheetTitle>
         </SheetHeader>
 
-        {/* ITEMS */}
+        <div className="-mx-6 mt-5 overflow-auto flex flex-col gap-3 flex-1">
+          <CartDrawerItem
+            id={1}
+            imageUrl=""
+            name="Pizza Margherita"
+            quantity={1}
+            price={666}
+            details={getCartItemDetails(2, 30, [
+              { name: "Cheese" },
+              { name: "Tomato" },
+            ])}
+          />
+        </div>
 
         <SheetFooter className="-mx-6 bg-white p-8">
           <div className="w-full">

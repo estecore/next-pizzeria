@@ -1,4 +1,4 @@
-export { CartItemInfo as Info } from "./cartItemInfo";
-export { CartItemDetailsImage as Image } from "./cartItemDetailsImage";
-export { CartItemDetailsPrice as Price } from "./cartItemDetailsPrice";
-export { CartItemDetailsCountButton as CountButton } from "./cartItemDetailsCountButton";
+export { CartItemInfo } from "./cartItemInfo";
+export { CartItemDetailsImage } from "./cartItemDetailsImage";
+export { CartItemDetailsPrice } from "./cartItemDetailsPrice";
+export { CartItemDetailsCountButton } from "./cartItemDetailsCountButton";
