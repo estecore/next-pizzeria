@@ -1,6 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Link from "next/link";
+
+import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
+
+import { useCartStore } from "@/shared/store";
+
+import { getCartItemDetails } from "@/shared/lib";
 
 import { ArrowRight } from "lucide-react";
 
@@ -13,20 +21,20 @@ import {
   SheetFooter,
   Button,
 } from "@/shared/components/ui";
+
 import { CartDrawerItem } from "./cartDrawerItem";
 
-import { getCartItemDetails } from "@/shared/lib";
+export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
+  const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
+    state.totalAmount,
+    state.fetchCartItems,
+    state.items,
+  ]);
 
-const items = [1, 1, 1];
-const totalAmount = 666;
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
-export const CartDrawer = ({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) => {
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -39,17 +47,26 @@ export const CartDrawer = ({
         </SheetHeader>
 
         <div className="-mx-6 mt-5 overflow-auto flex flex-col gap-3 flex-1">
-          <CartDrawerItem
-            id={1}
-            imageUrl=""
-            name="Pizza Margherita"
-            quantity={1}
-            price={666}
-            details={getCartItemDetails(2, 30, [
-              { name: "Cheese" },
-              { name: "Tomato" },
-            ])}
-          />
+          {items.length > 0 &&
+            items.map((item) => (
+              <CartDrawerItem
+                key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
+                name={item.name}
+                quantity={item.quantity}
+                price={item.price}
+                details={
+                  item.pizzaSize && item.pizzaType
+                    ? getCartItemDetails(
+                        item.ingredients,
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize
+                      )
+                    : ""
+                }
+              />
+            ))}
         </div>
 
         <SheetFooter className="-mx-6 bg-white p-8">
@@ -60,7 +77,7 @@ export const CartDrawer = ({
                 <div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
               </span>
 
-              <span className="font-bold text-lg">{totalAmount} ₽</span>
+              <span className="font-bold text-lg">{650} ₽</span>
             </div>
 
             <Link href="/cart">
