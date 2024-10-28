@@ -7,7 +7,7 @@ import { cn } from "@/shared/lib/utils";
 
 import { Title, ProductCard } from "./index";
 
-import { useCategoryStore } from "@/shared/store/category";
+import { useCategoryStore } from "@/shared/store";
 
 export const ProductsGroupList = ({
   title,
