@@ -17,8 +17,5 @@ export type CartDTO = Cart & {
 
 export interface CreateCartItemValues {
   productItemId: number;
-  pizzaSize?: number;
-  type?: number;
-  ingredientsIds?: number[];
-  quantity: number;
+  ingredients?: number[];
 }
