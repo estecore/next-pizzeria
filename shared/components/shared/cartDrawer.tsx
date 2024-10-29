@@ -25,15 +25,28 @@ import {
 import { CartDrawerItem } from "./cartDrawerItem";
 
 export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [totalAmount, fetchCartItems, items] = useCartStore((state) => [
-    state.totalAmount,
-    state.fetchCartItems,
-    state.items,
-  ]);
+  const [totalAmount, items, fetchCartItems, updateItemQuantity] = useCartStore(
+    (state) => [
+      state.totalAmount,
+      state.items,
+      state.fetchCartItems,
+      state.updateItemQuantity,
+    ]
+  );
 
   useEffect(() => {
     fetchCartItems();
   }, []);
+
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+
+    updateItemQuantity(id, newQuantity);
+  };
 
   return (
     <Sheet>
@@ -64,6 +77,9 @@ export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
                         item.pizzaSize as PizzaSize
                       )
                     : ""
+                }
+                onClickCountButton={(type) =>
+                  onClickCountButton(item.id, item.quantity, type)
                 }
               />
             ))}
