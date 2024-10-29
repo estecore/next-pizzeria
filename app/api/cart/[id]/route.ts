@@ -38,8 +38,6 @@ export const PATCH = async (
 
     const updatedUserCart = await updateCartTotalAmount(token);
 
-    console.log(updatedUserCart);
-
     return NextResponse.json(updatedUserCart, { status: 200 });
   } catch (error) {
     console.log("CART PATCH server error", error);
@@ -49,3 +47,43 @@ export const PATCH = async (
     );
   }
 };
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = Number(params.id);
+    const cartToken = req.cookies.get("cartToken")?.value;
+
+    if (!cartToken) {
+      return NextResponse.json({ error: "Cart token not found" });
+    }
+
+    const cartItem = await prisma.cartItem.findFirst({
+      where: {
+        id: Number(params.id),
+      },
+    });
+
+    if (!cartItem) {
+      return NextResponse.json({ error: "Cart item not found" });
+    }
+
+    await prisma.cartItem.delete({
+      where: {
+        id: cartItem.id,
+      },
+    });
+
+    const updatedUserCart = await updateCartTotalAmount(cartToken);
+
+    return NextResponse.json(updatedUserCart, { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      { message: "[CART_DELETE] Server error" },
+      { status: 500 }
+    );
+  }
+}

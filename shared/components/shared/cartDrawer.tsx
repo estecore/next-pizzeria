@@ -25,14 +25,19 @@ import {
 import { CartDrawerItem } from "./cartDrawerItem";
 
 export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [totalAmount, items, fetchCartItems, updateItemQuantity] = useCartStore(
-    (state) => [
-      state.totalAmount,
-      state.items,
-      state.fetchCartItems,
-      state.updateItemQuantity,
-    ]
-  );
+  const [
+    totalAmount,
+    items,
+    fetchCartItems,
+    updateItemQuantity,
+    removeCartItem,
+  ] = useCartStore((state) => [
+    state.totalAmount,
+    state.items,
+    state.fetchCartItems,
+    state.updateItemQuantity,
+    state.removeCartItem,
+  ]);
 
   useEffect(() => {
     fetchCartItems();
@@ -81,6 +86,7 @@ export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
                 onClickCountButton={(type) =>
                   onClickCountButton(item.id, item.quantity, type)
                 }
+                onClickRemove={() => removeCartItem(item.id)}
               />
             ))}
         </div>
