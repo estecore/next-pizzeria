@@ -21,9 +21,7 @@ export const PATCH = async (
     }
 
     const cartItem = await prisma.cartItem.findFirst({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     if (!cartItem) {
@@ -33,22 +31,20 @@ export const PATCH = async (
       );
     }
 
-    prisma.cartItem.update({
-      where: {
-        id,
-      },
-      data: {
-        quantity: body.quantity,
-      },
+    await prisma.cartItem.update({
+      where: { id },
+      data: { quantity: body.quantity },
     });
 
     const updatedUserCart = await updateCartTotalAmount(token);
 
-    return updatedUserCart;
+    console.log(updatedUserCart);
+
+    return NextResponse.json(updatedUserCart, { status: 200 });
   } catch (error) {
     console.log("CART PATCH server error", error);
     return NextResponse.json(
-      { message: "Something went wrong when cart update" },
+      { message: "Something went wrong when updating the cart" },
       { status: 500 }
     );
   }

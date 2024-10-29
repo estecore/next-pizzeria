@@ -13,6 +13,7 @@ import { CartItemProps } from "./cartItemDetails/cartItemDetails.types";
 
 interface CartDrawerItemProps extends CartItemProps {
   classNames?: string;
+  onClickCountButton: (type: "plus" | "minus") => void;
 }
 
 export const CartDrawerItem = ({
@@ -23,6 +24,7 @@ export const CartDrawerItem = ({
   details,
   quantity,
   price,
+  onClickCountButton,
 }: CartDrawerItemProps) => {
   return (
     <div className={cn("flex bg-white p-5 gap-6", classNames)}>
@@ -34,12 +36,7 @@ export const CartDrawerItem = ({
         <hr className="my-3" />
 
         <div className="flex items-center justify-between">
-          <CountButton
-            onClick={(type) => {
-              console.log(type);
-            }}
-            value={quantity}
-          />
+          <CountButton onClick={onClickCountButton} value={quantity} />
 
           <div className="flex items-center gap-3">
             <CartItemDetailsPrice value={price} />
