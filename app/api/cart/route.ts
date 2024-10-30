@@ -74,6 +74,8 @@ export const POST = async (req: NextRequest) => {
     }
 
     await prisma.cartItem.create({
+      // TODO !!!!!!!!!!!!!!!!!!!!!!!!
+      // @ts-ignore
       data: {
         cartId: userCart?.id,
         productItemId: data.productItemId,
