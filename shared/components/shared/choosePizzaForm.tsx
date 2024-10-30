@@ -17,6 +17,7 @@ export const ChoosePizzaForm = ({
   imageUrl,
   ingredients,
   onSubmit,
+  loading,
   className,
 }: {
   imageUrl: string;
@@ -24,6 +25,7 @@ export const ChoosePizzaForm = ({
   ingredients: Ingredient[];
   items: ProductItem[];
   onSubmit: (itemId: number, ingredients: number[]) => void;
+  loading: boolean;
   className?: string;
 }) => {
   const {
@@ -45,28 +47,18 @@ export const ChoosePizzaForm = ({
     selectedIngredients
   );
 
-  const handleClickAdd = async () => {
-    try {
-      if (currentItemId) {
-        onSubmit(currentItemId, Array.from(selectedIngredients));
-      }
-    } catch (error) {
-      console.error(error);
+  const handleClickAdd = () => {
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
     }
   };
 
   return (
     <div className={cn(className, "flex flex-1")}>
-      <ProductImage
-        imageUrl={imageUrl}
-        alt={name}
-        size={size}
-        isPizzaForm={true}
-      />
+      <ProductImage imageUrl={imageUrl} alt={name} size={size} isPizzaForm />
 
       <div className="flex flex-col w-[490px] bg-[#FCFCFC] p-7">
         <Title text={name} size="md" className="font-extrabold mb-1" />
-
         <p className="text-gray-400">{textDetaills}</p>
 
         <div className="flex flex-col gap-4 mt-5">
@@ -98,7 +90,7 @@ export const ChoosePizzaForm = ({
         </div>
 
         <Button
-          //   loading={loading}
+          loading={loading}
           onClick={handleClickAdd}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-auto"
         >

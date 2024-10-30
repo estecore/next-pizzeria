@@ -9,6 +9,7 @@ export const ChooseProductForm = ({
   price,
   textDetaills,
   onSubmit,
+  loading,
   className,
 }: {
   imageUrl: string;
@@ -16,6 +17,7 @@ export const ChooseProductForm = ({
   price: number;
   textDetaills?: string;
   onSubmit: VoidFunction;
+  loading: boolean;
   className?: string;
 }) => {
   return (
@@ -32,8 +34,8 @@ export const ChooseProductForm = ({
 
         {textDetaills && <p className="text-gray-400">{textDetaills}</p>}
         <Button
-          //   loading={loading}
-          onClick={onSubmit}
+          loading={loading}
+          onClick={() => onSubmit()}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
           Add to cart - {price} ₽
