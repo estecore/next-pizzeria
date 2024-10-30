@@ -42,7 +42,7 @@ export const ProductCard = ({
           tomatoes, alfredo sauce, garlic
         </p>
 
-        <div className="flex justi fy-between items-center mt-4">
+        <div className="flex justify-between items-center mt-4">
           <span className="text-[20px]">
             from <b>{price} ₽</b>
           </span>
