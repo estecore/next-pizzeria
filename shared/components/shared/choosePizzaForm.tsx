@@ -4,30 +4,26 @@ import { cn, getPizzaDetails } from "@/shared/lib/";
 
 import { Ingredient, ProductItem } from "@prisma/client";
 
-import {
-  mapPizzaType,
-  PizzaSize,
-  PizzaType,
-  pizzaTypes,
-} from "@/shared/constants/pizza";
+import { PizzaSize, PizzaType, pizzaTypes } from "@/shared/constants/pizza";
+
+import { usePizzaOptions } from "@/shared/hooks";
 
 import { GroupVariants, IngredientItem, ProductImage, Title } from "./index";
 import { Button } from "../ui";
-import { usePizzaOptions } from "@/shared/hooks";
 
 export const ChoosePizzaForm = ({
   name,
   items,
   imageUrl,
   ingredients,
-  onClickAddCart,
+  onSubmit,
   className,
 }: {
   imageUrl: string;
   name: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCart?: VoidFunction;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
   className?: string;
 }) => {
   const {
@@ -35,6 +31,7 @@ export const ChoosePizzaForm = ({
     type,
     availableSizes,
     selectedIngredients,
+    currentItemId,
     setSize,
     setType,
     addIngredient,
@@ -50,7 +47,9 @@ export const ChoosePizzaForm = ({
 
   const handleClickAdd = async () => {
     try {
-      onClickAddCart?.();
+      if (currentItemId) {
+        onSubmit(currentItemId, Array.from(selectedIngredients));
+      }
     } catch (error) {
       console.error(error);
     }

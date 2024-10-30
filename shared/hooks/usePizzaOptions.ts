@@ -14,6 +14,7 @@ export const usePizzaOptions = (
   type: PizzaType;
   availableSizes: { name: string; value: string; disabled: boolean }[];
   selectedIngredients: Set<number>;
+  currentItemId?: number;
   setSize: (size: PizzaSize) => void;
   setType: (type: PizzaType) => void;
   addIngredient: (id: number) => void;
@@ -26,6 +27,10 @@ export const usePizzaOptions = (
   );
 
   const availableSizes = getAvailablePizzaSizes(items, type);
+
+  const currentItemId = items.find(
+    (item) => item.pizzaType === type && item.size === size
+  )?.id;
 
   useEffect(() => {
     const isAvailableSize = availableSizes?.find(
@@ -43,6 +48,7 @@ export const usePizzaOptions = (
     type,
     availableSizes,
     selectedIngredients,
+    currentItemId,
     setSize,
     setType,
     addIngredient,

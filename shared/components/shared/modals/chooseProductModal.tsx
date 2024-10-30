@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/shared/lib/utils";
 
+import { useCartStore } from "@/shared/store";
+
 import { ProductWithRelations } from "@/@types/prisma";
 
 import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
@@ -18,9 +20,22 @@ export const ChooseProductModal = ({
 }) => {
   const router = useRouter();
 
-  const isPizzaForm = Boolean(product.productItems[0].pizzaType);
+  const firstItem = product.productItems[0];
+  const isPizzaForm = Boolean(firstItem.pizzaType);
 
-  console.log(product);
+  const addCartItem = useCartStore((state) => state.addCartItem);
+
+  const onAddProduct = () => {
+    addCartItem({
+      productItemId: firstItem.id,
+    });
+  };
+  const onAddPizza = (productItemId: number, ingredients: number[]) => {
+    addCartItem({
+      productItemId,
+      ingredients,
+    });
+  };
 
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
@@ -36,9 +51,15 @@ export const ChooseProductModal = ({
             name={product.name}
             ingredients={product.ingredients}
             items={product.productItems}
+            onSubmit={onAddPizza}
           />
         ) : (
-          <ChooseProductForm name={product.name} imageUrl={product.imageUrl} />
+          <ChooseProductForm
+            name={product.name}
+            imageUrl={product.imageUrl}
+            price={firstItem.price}
+            onSubmit={onAddProduct}
+          />
         )}
       </DialogContent>
     </Dialog>
