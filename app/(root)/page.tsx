@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { prisma } from "@/prisma/prismaClient";
+import { findPizzas, GetSearchParams } from "@/shared/lib";
 
 import {
   Container,
@@ -10,17 +10,8 @@ import {
   TopBar,
 } from "@/shared/components/shared";
 
-const Home = async () => {
-  const categories = prisma.category.findMany({
-    include: {
-      products: {
-        include: {
-          ingredients: true,
-          productItems: true,
-        },
-      },
-    },
-  });
+const Home = async ({ searchParams }: { searchParams: GetSearchParams }) => {
+  const categories = await findPizzas(searchParams);
 
   return (
     <>
