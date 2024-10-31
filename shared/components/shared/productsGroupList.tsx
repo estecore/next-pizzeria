@@ -3,11 +3,13 @@
 import { useRef, useEffect } from "react";
 import { useIntersection } from "react-use";
 
+import { ProductWithRelations } from "@/@types/prisma";
+
+import { useCategoryStore } from "@/shared/store";
+
 import { cn } from "@/shared/lib/utils";
 
 import { Title, ProductCard } from "./index";
-
-import { useCategoryStore } from "@/shared/store";
 
 export const ProductsGroupList = ({
   title,
@@ -17,7 +19,7 @@ export const ProductsGroupList = ({
   className,
 }: {
   title: string;
-  items: any[];
+  items: ProductWithRelations[];
   listClassName?: string;
   categoryId: number;
   className?: string;
@@ -46,6 +48,7 @@ export const ProductsGroupList = ({
             name={product.name}
             price={product?.productItems?.[0]?.price}
             imageUrl={product.imageUrl}
+            ingredients={product.ingredients}
           />
         ))}
       </div>
