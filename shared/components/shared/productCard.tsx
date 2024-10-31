@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import { Plus } from "lucide-react";
 
+import { Ingredient } from "@prisma/client";
+
 import { cn } from "@/shared/lib/utils";
 
 import { Title } from "./index";
@@ -14,12 +16,14 @@ export const ProductCard = ({
   name,
   price,
   imageUrl,
+  ingredients,
   className,
 }: {
-  id: string;
+  id: number;
   name: string;
   price: number;
   imageUrl: string;
+  ingredients: Ingredient[];
   className?: string;
 }) => {
   return (
@@ -38,8 +42,7 @@ export const ProductCard = ({
         <Title text={name} size="sm" className="mb-1 mt-3 font-bold" />
 
         <p className="text-sm text-gray-400">
-          Chicken, mozzarella, cheddar and parmesan cheese, cheese sauce,
-          tomatoes, alfredo sauce, garlic
+          {ingredients.map((ingredient) => ingredient.name).join(", ")}
         </p>
 
         <div className="flex justify-between items-center mt-4">
