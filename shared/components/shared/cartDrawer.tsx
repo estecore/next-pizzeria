@@ -87,6 +87,7 @@ export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
                   onClickCountButton(item.id, item.quantity, type)
                 }
                 onClickRemove={() => removeCartItem(item.id)}
+                disabled={item.disabled}
               />
             ))}
         </div>

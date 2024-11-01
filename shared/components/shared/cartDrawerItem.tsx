@@ -26,9 +26,18 @@ export const CartDrawerItem = ({
   price,
   onClickCountButton,
   onClickRemove,
+  disabled,
 }: CartDrawerItemProps) => {
   return (
-    <div className={cn("flex bg-white p-5 gap-6", classNames)}>
+    <div
+      className={cn(
+        "flex bg-white p-5 gap-6 transition-opacity duration-400",
+        {
+          "opacity-50 pointer-events-none select-none": disabled,
+        },
+        classNames
+      )}
+    >
       <CartItemDetailsImage src={imageUrl} />
 
       <div className="flex-1">
