@@ -1,23 +1,14 @@
-import type { Metadata } from "next";
-
 import { Nunito } from "next/font/google";
 
-import { Header } from "@/components/shared/header";
+import { Toaster } from "react-hot-toast";
 
-import "./globals.css";
+import "@/styles/globals.css";
 
 const nunito = Nunito({
   subsets: ["cyrillic"],
   variable: "--font-nunito",
   weight: ["400", "500", "600", "700", "800", "900"],
 });
-export const metadata: Metadata = {
-  title: "Next Pizza | Home",
-  description: "Next Pizza created by Estecore",
-  icons: {
-    icon: "/logo.png",
-  },
-};
 
 const RootLayout = ({
   children,
@@ -26,9 +17,18 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
+      <head>
+        <link
+          data-rh="true"
+          rel="shortcut icon"
+          href="/logo.png"
+          type="image/png"
+        />
+      </head>
       <body className={nunito.className}>
-        <Header />
-        <main className="min-h-screen">{children}</main>
+        {children}
+
+        <Toaster />
       </body>
     </html>
   );
