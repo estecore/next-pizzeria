@@ -71,20 +71,20 @@ export const POST = async (req: NextRequest) => {
       const resp = NextResponse.json(updatedCart);
       resp.cookies.set("cartToken", token);
       return resp;
-    }
-
-    await prisma.cartItem.create({
-      // TODO !!!!!!!!!!!!!!!!!!!!!!!!
-      // @ts-ignore
-      data: {
-        cartId: userCart?.id,
-        productItemId: data.productItemId,
-        quantity: 1,
-        ingredients: {
-          connect: data.ingredients?.map((id) => ({ id })),
+    } else {
+      await prisma.cartItem.create({
+        // TODO !!!!!!!!!!!!!!!!!!!!!!!!
+        // @ts-ignore
+        data: {
+          cartId: userCart?.id,
+          productItemId: data.productItemId,
+          quantity: 1,
+          ingredients: {
+            connect: data.ingredients?.map((id) => ({ id })),
+          },
         },
-      },
-    });
+      });
+    }
 
     const updatedCart = await updateCartTotalAmount(token);
 
