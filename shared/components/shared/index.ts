@@ -25,3 +25,5 @@ export { CartDrawerItem } from "./cartDrawerItem";
 export { ProductForm } from "./productForm";
 export { WhiteBlock } from "./whiteBlock";
 export { CheckoutItemDetails } from "./checkoutItemDetails";
+export { CheckoutItem } from "./checkoutItem";
+export { CheckoutSidebar } from "./checkoutSidebar";

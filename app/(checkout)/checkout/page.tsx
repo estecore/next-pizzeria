@@ -1,21 +1,72 @@
-import { ArrowRight, Package, Percent, Truck } from "lucide-react";
+"use client";
+
+import { PizzaType, PizzaSize } from "@/shared/constants/pizza";
+
+import { useCart } from "@/shared/hooks";
+
+import { getCartItemDetails } from "@/shared/lib";
 
 import {
-  CheckoutItemDetails,
+  CheckoutItem,
+  CheckoutSidebar,
   Container,
   Title,
   WhiteBlock,
 } from "@/shared/components/shared";
-import { Button, Input, Textarea } from "@/shared/components/ui";
+import { Input, Textarea } from "@/shared/components/ui";
+import { CheckoutItemSkeleton } from "@/shared/components/shared/skeletons";
 
-export default async function CheckoutPage() {
+export default function CheckoutPage() {
+  const { totalAmount, items, loading, removeCartItem, updateItemQuantity } =
+    useCart();
+
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+
+    updateItemQuantity(id, newQuantity);
+  };
+
   return (
     <Container className="mt-10">
       <Title text="Checkout" className="font-extrabold mb-8 text-[36px]" />
 
       <div className="flex gap-10">
         <div className="flex flex-col gap-10 flex-1 mb-20">
-          <WhiteBlock title="1. Cart">13245</WhiteBlock>
+          <WhiteBlock title="1. Cart">
+            <div className="flex flex-col gap-5">
+              {items.map((item, index) =>
+                loading ? (
+                  <CheckoutItemSkeleton key={index} />
+                ) : (
+                  <CheckoutItem
+                    key={item.id}
+                    name={item.name}
+                    price={item.price}
+                    imageUrl={item.imageUrl}
+                    quantity={item.quantity}
+                    details={
+                      item.pizzaSize && item.pizzaType
+                        ? getCartItemDetails(
+                            item.ingredients,
+                            item.pizzaType as PizzaType,
+                            item.pizzaSize as PizzaSize
+                          )
+                        : ""
+                    }
+                    onClickCountButton={(type) =>
+                      onClickCountButton(item.id, item.quantity, type)
+                    }
+                    onClickRemove={() => removeCartItem(item.id)}
+                    disabled={item.disabled}
+                  />
+                )
+              )}
+            </div>
+          </WhiteBlock>
           <WhiteBlock title="2. Personal info">
             <div className="grid grid-cols-2 gap-5">
               <Input
@@ -52,48 +103,7 @@ export default async function CheckoutPage() {
         {/* RIGHT */}
 
         <div className="w-[450px]">
-          <WhiteBlock className="p-6 sticky top-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-xl">Total:</span>
-              <span className="text-[34px] font-extrabold">4506 ₽</span>
-
-              <CheckoutItemDetails
-                title={
-                  <div className="flex items-center">
-                    <Package size={18} className="mr-2 text-gray-400" />
-                    Item cost:
-                  </div>
-                }
-                value={4506}
-              />
-              <CheckoutItemDetails
-                title={
-                  <div className="flex items-center">
-                    <Percent size={18} className="mr-2 text-gray-400" />
-                    Taxes:
-                  </div>
-                }
-                value={100}
-              />
-              <CheckoutItemDetails
-                title={
-                  <div className="flex items-center">
-                    <Truck size={18} className="mr-2 text-gray-400" />
-                    Delivery:
-                  </div>
-                }
-                value={200}
-              />
-
-              <Button
-                type="submit"
-                className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
-              >
-                Proceed to payment
-                <ArrowRight className="w-5 ml-2" />
-              </Button>
-            </div>
-          </WhiteBlock>
+          <CheckoutSidebar totalAmount={totalAmount} />
         </div>
       </div>
     </Container>
