@@ -8,9 +8,17 @@ import { cn } from "@/shared/lib";
 import { CartButton, Container, SearchInput } from "./index";
 import { Button } from "../ui";
 
-export const Header = ({ className }: { className?: string }) => {
+export const Header = ({
+  className,
+  hasSearch = true,
+  hasCart = true,
+}: {
+  className?: string;
+  hasSearch?: boolean;
+  hasCart?: boolean;
+}) => {
   return (
-    <header className={cn("border border-b", className)}>
+    <header className={cn("border-b", className)}>
       <Container className="flex items-center justify-between py-8">
         <Link href="/">
           <div className="flex items-center gap-4">
@@ -24,9 +32,11 @@ export const Header = ({ className }: { className?: string }) => {
           </div>
         </Link>
 
-        <div className="mx-10 flex-1">
-          <SearchInput />
-        </div>
+        {hasSearch && (
+          <div className="mx-10 flex-1">
+            <SearchInput />
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           <Button variant={"outline"} className="flex items-center gap-1">
@@ -34,7 +44,7 @@ export const Header = ({ className }: { className?: string }) => {
             Log in
           </Button>
 
-          <CartButton />
+          {hasCart && <CartButton />}
         </div>
       </Container>
     </header>

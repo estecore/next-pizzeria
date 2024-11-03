@@ -23,3 +23,5 @@ export { CountIconButton } from "./countIconButton";
 export { CountButton } from "./countButton";
 export { CartDrawerItem } from "./cartDrawerItem";
 export { ProductForm } from "./productForm";
+export { WhiteBlock } from "./whiteBlock";
+export { CheckoutItemDetails } from "./checkoutItemDetails";
