@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/prisma/prismaClient";
 import { OrderStatus } from "@prisma/client";
 
-import { sendEmail } from "@/shared/lib";
+import { createPayment, sendEmail } from "@/shared/lib";
 
 import { TypeCheckoutForm } from "@/shared/schemas";
 
@@ -80,17 +80,40 @@ export const createOrder = async (data: TypeCheckoutForm) => {
       },
     });
 
-    // TODO: create url to payment
+    // create payment
+    const paymentData = await createPayment({
+      amount: userCart.totalAmount,
+      description: `Next Pizzeria order #${order.id}`,
+      orderId: order.id,
+    });
 
+    if (!paymentData) {
+      throw new Error("Failed to create payment");
+    }
+
+    await prisma.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        paymentId: paymentData.id,
+      },
+    });
+
+    const paymentUrl = paymentData.confirmation.confirmation_url;
+
+    // send email
     await sendEmail(
       data.email,
       `Next Pizzeria / Payment order #${order.id}`,
       PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: "",
+        paymentUrl,
       })
     );
+
+    return paymentUrl;
   } catch (error) {
     console.log("[ACTIONS] server error", error);
   }
