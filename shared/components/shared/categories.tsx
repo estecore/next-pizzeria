@@ -29,7 +29,7 @@ export const Categories = ({
           )}
           href={`#${name}`}
         >
-          <button>{name}</button>
+          <button type="button">{name}</button>
         </a>
       ))}
     </div>

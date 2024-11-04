@@ -4,16 +4,13 @@ import { cn } from "@/shared/lib/";
 
 import { ShoppingCart, ArrowRight } from "lucide-react";
 
+import { useCart } from "@/shared/hooks";
+
 import { CartDrawer } from ".";
 import { Button } from "../ui";
-import { useCartStore } from "@/shared/store";
 
 export const CartButton = ({ classNames }: { classNames?: string }) => {
-  const [loading, totalAmount, items] = useCartStore((state) => [
-    state.loading,
-    state.totalAmount,
-    state.items,
-  ]);
+  const { items, totalAmount, loading } = useCart();
 
   const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 

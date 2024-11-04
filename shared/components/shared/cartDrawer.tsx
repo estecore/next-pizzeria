@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import Link from "next/link";
@@ -8,7 +8,7 @@ import Image from "next/image";
 
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
 
-import { useCartStore } from "@/shared/store";
+import { useCart } from "@/shared/hooks";
 
 import { cn, getCartItemDetails } from "@/shared/lib";
 
@@ -27,23 +27,10 @@ import {
 } from "@/shared/components/ui";
 
 export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [
-    totalAmount,
-    items,
-    fetchCartItems,
-    updateItemQuantity,
-    removeCartItem,
-  ] = useCartStore((state) => [
-    state.totalAmount,
-    state.items,
-    state.fetchCartItems,
-    state.updateItemQuantity,
-    state.removeCartItem,
-  ]);
+  const { totalAmount, items, loading, removeCartItem, updateItemQuantity } =
+    useCart();
 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
+  const [redirecting, setRedirecting] = useState<boolean>(false);
 
   const onClickCountButton = (
     id: number,
@@ -140,8 +127,13 @@ export const CartDrawer = ({ children }: { children: React.ReactNode }) => {
                   <span className="font-bold text-lg">{totalAmount} ₽</span>
                 </div>
 
-                <Link href="/cart">
-                  <Button type="submit" className="w-full h-12 text-base">
+                <Link href="/checkout">
+                  <Button
+                    loading={redirecting || loading}
+                    onClick={() => setRedirecting(true)}
+                    type="submit"
+                    className="w-full h-12 text-base"
+                  >
                     Place order
                     <ArrowRight className="w-5 ml-2" />
                   </Button>
