@@ -27,3 +27,6 @@ export { WhiteBlock } from "./whiteBlock";
 export { CheckoutItemDetails } from "./checkoutItemDetails";
 export { CheckoutItem } from "./checkoutItem";
 export { CheckoutSidebar } from "./checkoutSidebar";
+export { RequiredSymbol } from "./requiredSymbol";
+export { ErrorText } from "./errorText";
+export { ClearButton } from "./clearButton";
