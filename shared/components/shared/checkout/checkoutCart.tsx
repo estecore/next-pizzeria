@@ -26,33 +26,33 @@ export const CheckoutCart = ({
   return (
     <WhiteBlock title="1. Cart" className={className}>
       <div className="flex flex-col gap-5">
-        {items.map((item, index) =>
-          loading ? (
-            <CheckoutItemSkeleton key={index} />
-          ) : (
-            <CheckoutItem
-              key={item.id}
-              name={item.name}
-              price={item.price}
-              imageUrl={item.imageUrl}
-              quantity={item.quantity}
-              details={
-                item.pizzaSize && item.pizzaType
-                  ? getCartItemDetails(
-                      item.ingredients,
-                      item.pizzaType as PizzaType,
-                      item.pizzaSize as PizzaSize
-                    )
-                  : ""
-              }
-              onClickCountButton={(type) =>
-                onClickCountButton(item.id, item.quantity, type)
-              }
-              onClickRemove={() => removeCartItem(item.id)}
-              disabled={item.disabled}
-            />
-          )
-        )}
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <CheckoutItemSkeleton key={index} />
+            ))
+          : items.map((item) => (
+              <CheckoutItem
+                key={item.id}
+                name={item.name}
+                price={item.price}
+                imageUrl={item.imageUrl}
+                quantity={item.quantity}
+                details={
+                  item.pizzaSize && item.pizzaType
+                    ? getCartItemDetails(
+                        item.ingredients,
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize
+                      )
+                    : ""
+                }
+                onClickCountButton={(type) =>
+                  onClickCountButton(item.id, item.quantity, type)
+                }
+                onClickRemove={() => removeCartItem(item.id)}
+                disabled={item.disabled}
+              />
+            ))}
       </div>
     </WhiteBlock>
   );

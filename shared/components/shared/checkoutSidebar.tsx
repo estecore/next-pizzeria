@@ -1,10 +1,16 @@
 import { Package, Percent, Truck, ArrowRight } from "lucide-react";
 
-import { Button } from "../ui";
+import { Button, Skeleton } from "../ui";
 import { CheckoutItemDetails } from "./checkoutItemDetails";
 import { WhiteBlock } from "./whiteBlock";
 
-export const CheckoutSidebar = ({ totalAmount }: { totalAmount: number }) => {
+export const CheckoutSidebar = ({
+  totalAmount,
+  loading,
+}: {
+  totalAmount: number;
+  loading?: boolean;
+}) => {
   const VAT: number = +(totalAmount * 0.15).toFixed(2);
   const DELIVERY_PRICES: number = 200;
   const TOTAL_COST: number = totalAmount + VAT + DELIVERY_PRICES;
@@ -13,7 +19,13 @@ export const CheckoutSidebar = ({ totalAmount }: { totalAmount: number }) => {
     <WhiteBlock className="p-6 sticky top-4">
       <div className="flex flex-col gap-1">
         <span className="text-xl">Total:</span>
-        <span className="text-[34px] font-extrabold">{TOTAL_COST} ₽</span>
+        {loading ? (
+          <Skeleton className="w-48 h-11" />
+        ) : (
+          <span className="text-[34px] font-extrabold h-11">
+            {TOTAL_COST} ₽
+          </span>
+        )}
 
         <CheckoutItemDetails
           title={
@@ -22,7 +34,13 @@ export const CheckoutSidebar = ({ totalAmount }: { totalAmount: number }) => {
               Cart cost:
             </div>
           }
-          value={totalAmount}
+          value={
+            loading ? (
+              <Skeleton className="w-16 h-6 rounded-[6px] inline-block" />
+            ) : (
+              totalAmount
+            )
+          }
         />
         <CheckoutItemDetails
           title={
@@ -31,7 +49,13 @@ export const CheckoutSidebar = ({ totalAmount }: { totalAmount: number }) => {
               Taxes:
             </div>
           }
-          value={VAT}
+          value={
+            loading ? (
+              <Skeleton className="w-16 h-6 rounded-[6px] inline-block" />
+            ) : (
+              VAT
+            )
+          }
         />
         <CheckoutItemDetails
           title={
@@ -40,10 +64,17 @@ export const CheckoutSidebar = ({ totalAmount }: { totalAmount: number }) => {
               Delivery:
             </div>
           }
-          value={DELIVERY_PRICES}
+          value={
+            loading ? (
+              <Skeleton className="w-16 h-6 rounded-[6px] inline-block" />
+            ) : (
+              DELIVERY_PRICES
+            )
+          }
         />
 
         <Button
+          loading={loading}
           type="submit"
           className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
         >

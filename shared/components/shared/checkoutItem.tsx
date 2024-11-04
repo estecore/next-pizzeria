@@ -51,7 +51,7 @@ export const CheckoutItem = ({
 
       <div className="flex items-center gap-5 ml-20">
         <CountButton onClick={onClickCountButton} value={quantity} />
-        <button onClick={onClickRemove}>
+        <button type="button" onClick={onClickRemove}>
           <X
             className="text-gray-400 cursor-pointer hover:text-gray-600"
             size={20}

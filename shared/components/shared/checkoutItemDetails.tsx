@@ -7,7 +7,7 @@ export const CheckoutItemDetails = ({
 }: {
   className?: string;
   title: React.ReactNode;
-  value: number;
+  value: React.ReactNode;
 }) => {
   return (
     <div className={cn("flex my-4", className)}>
