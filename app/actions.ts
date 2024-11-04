@@ -5,7 +5,11 @@ import { cookies } from "next/headers";
 import { prisma } from "@/prisma/prismaClient";
 import { OrderStatus } from "@prisma/client";
 
+import { sendEmail } from "@/shared/lib";
+
 import { TypeCheckoutForm } from "@/shared/schemas";
+
+import { PayOrderTemplate } from "@/shared/components/shared/emailTemplates";
 
 export const createOrder = async (data: TypeCheckoutForm) => {
   try {
@@ -77,7 +81,17 @@ export const createOrder = async (data: TypeCheckoutForm) => {
     });
 
     // TODO: create url to payment
+
+    await sendEmail(
+      data.email,
+      `Next Pizzeria / Payment order #${order.id}`,
+      PayOrderTemplate({
+        orderId: order.id,
+        totalAmount: order.totalAmount,
+        paymentUrl: "",
+      })
+    );
   } catch (error) {
-    console.log(error);
+    console.log("[ACTIONS] server error", error);
   }
 };

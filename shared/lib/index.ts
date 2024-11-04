@@ -8,5 +8,6 @@ export { getCartDetails } from "./getCartDetails";
 export { findOrCreateCart } from "./findOrCreateCart";
 export { updateCartTotalAmount } from "./updateCartTotalAmount";
 export { findPizzas } from "./findPizzas";
+export { sendEmail } from "./sendEmail";
 export type { CartStateItem } from "./getCartDetails";
 export type { GetSearchParams } from "./findPizzas";
