@@ -1,5 +1,12 @@
+"use client";
+
+import { useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+
+import toast from "react-hot-toast";
 
 import { User } from "lucide-react";
 
@@ -17,6 +24,16 @@ export const Header = ({
   hasSearch?: boolean;
   hasCart?: boolean;
 }) => {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.has("paid")) {
+      setTimeout(() => {
+        toast.success("Order successfully paid 🎉 Check your E-mail!");
+      }, 500);
+    }
+  }, []);
+
   return (
     <header className={cn("border-b", className)}>
       <Container className="flex items-center justify-between py-8">
