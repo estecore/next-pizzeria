@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import type { Metadata } from "next";
 
 import { Container, Header } from "@/shared/components/shared";
@@ -16,7 +18,9 @@ export default async function CheckoutLayout({
     <>
       <main className="min-h-screen h-full bg-[#F4F1EE]">
         <Container>
-          <Header hasSearch={false} hasCart={false} />
+          <Suspense>
+            <Header hasSearch={false} hasCart={false} />
+          </Suspense>
           {children}
         </Container>
       </main>
