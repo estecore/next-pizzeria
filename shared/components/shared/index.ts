@@ -30,3 +30,5 @@ export { CheckoutSidebar } from "./checkoutSidebar";
 export { RequiredSymbol } from "./requiredSymbol";
 export { ErrorText } from "./errorText";
 export { ClearButton } from "./clearButton";
+export { Providers } from "./providers";
+export { ProfileButton } from "./profileButton";
