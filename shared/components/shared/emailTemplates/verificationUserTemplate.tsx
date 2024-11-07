@@ -6,7 +6,9 @@ export const VerificationUserTemplate = ({ code }: { code: string }) => {
       </p>
 
       <p>
-        <a href={`http://localhost:3000/api/auth/verify?code=${code}`}>
+        <a
+          href={`https://next-pizzeria.vercel.app/api/auth/verify?code=${code}`}
+        >
           Verify registration
         </a>
       </p>
