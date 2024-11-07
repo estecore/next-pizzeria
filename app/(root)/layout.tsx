@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import type { Metadata } from "next";
 
 import { Header } from "@/shared/components/shared/header";
@@ -19,7 +21,9 @@ const HomeLayout = ({
 }>) => {
   return (
     <>
-      <Header />
+      <Suspense>
+        <Header />
+      </Suspense>
       <main className="min-h-screen">{children}</main>
       {modal}
     </>

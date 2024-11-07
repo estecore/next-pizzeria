@@ -53,7 +53,7 @@ export const POST = async (req: NextRequest) => {
 
     const findCartItem = await prisma.cartItem.findFirst({
       where: {
-        cartId: userCart?.id,
+        cartId: userCart.id,
         productItemId: data.productItemId,
         ingredients: { every: { id: { in: data.ingredients } } },
       },
@@ -73,10 +73,8 @@ export const POST = async (req: NextRequest) => {
       return resp;
     } else {
       await prisma.cartItem.create({
-        // TODO !!!!!!!!!!!!!!!!!!!!!!!!
-        // @ts-ignore
         data: {
-          cartId: userCart?.id,
+          cartId: userCart.id,
           productItemId: data.productItemId,
           quantity: 1,
           ingredients: {

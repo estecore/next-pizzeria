@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/prisma/prismaClient";
 
+export const dynamic = "force-dynamic";
+
 export const GET = async (req: NextRequest) => {
   try {
     const code = req.nextUrl.searchParams.get("code");
@@ -38,5 +40,6 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.redirect(new URL("/?verified", req.url));
   } catch (error) {
     console.log("[GET_VERIFY] server error", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 };

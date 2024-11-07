@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import { prisma } from "@/prisma/prismaClient";
 
@@ -6,7 +6,7 @@ import { getUserSession } from "@/shared/lib/getUserSession";
 
 export const dynamic = "force-dynamic";
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async () => {
   try {
     const user = await getUserSession();
 
