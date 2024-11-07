@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -8,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutFormSchema, TypeCheckoutForm } from "@/shared/schemas";
 
 import { createOrder } from "@/app/actions";
+
+import { Api } from "@/shared/services/apiClient";
 
 import { useCart } from "@/shared/hooks";
 
@@ -23,6 +26,8 @@ export default function CheckoutPage() {
   const { totalAmount, items, loading, removeCartItem, updateItemQuantity } =
     useCart();
 
+  const { data: session } = useSession();
+
   const form = useForm<TypeCheckoutForm>({
     resolver: zodResolver(checkoutFormSchema),
     defaultValues: {
@@ -35,11 +40,26 @@ export default function CheckoutPage() {
     },
   });
 
+  useEffect(() => {
+    async function fetchUserInfo() {
+      const data = await Api.auth.getMe();
+      const [firstName, lastName] = data.fullName.split(" ");
+
+      form.setValue("firstName", firstName);
+      form.setValue("lastName", lastName);
+      form.setValue("email", data.email);
+    }
+
+    if (session) {
+      fetchUserInfo();
+    }
+  }, [session]);
+
   const onSubmit: SubmitHandler<TypeCheckoutForm> = async (data) => {
     try {
       setSubmitting(true);
 
-      const url: string = await createOrder(data);
+      const url = await createOrder(data);
 
       toast.success("Order created successfully! Redirecting for payment...", {
         icon: "✅",
