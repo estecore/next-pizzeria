@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import toast from "react-hot-toast";
 
@@ -22,13 +22,28 @@ export const Header = ({
   hasSearch?: boolean;
   hasCart?: boolean;
 }) => {
+  const router = useRouter();
+
   const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.has("paid")) {
+    if (!searchParams) return;
+
+    const messages: Record<string, string> = {
+      paid: "Order successfully paid! 🎉 Check your E-mail!",
+      verified: "Account successfully verified! 🎉",
+    };
+
+    const messageKey = ["paid", "verified"].find((key) =>
+      searchParams.has(key)
+    );
+    const message = messageKey && messages[messageKey];
+
+    if (message) {
       setTimeout(() => {
-        toast.success("Order successfully paid 🎉 Check your E-mail!");
+        router.replace("/");
+        toast.success(message);
       }, 500);
     }
   }, []);
