@@ -8,11 +8,16 @@ import { UserRole } from "@prisma/client";
 
 import { compare, hashSync } from "bcrypt";
 
-const clientId = process.env.GITHUB_ID;
-const clientSecret = process.env.GITHUB_SECRET;
+const gitHubId = process.env.GITHUB_ID;
+const gitHubSecret = process.env.GITHUB_SECRET;
+const googleId = process.env.GOOGLE_ID;
+const googleSecret = process.env.GOOGLE_SECRET;
 const secret = process.env.NEXTAUTH_SECRET;
 
-if (!clientId || !clientSecret) {
+if (!gitHubId || !gitHubSecret) {
+  throw new Error("Missing GitHub credentials");
+}
+if (!googleId || !googleSecret) {
   throw new Error("Missing GitHub credentials");
 }
 if (!secret) {
@@ -21,9 +26,13 @@ if (!secret) {
 
 export const authOptions: AuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: googleId,
+      clientSecret: googleSecret,
+    }),
     GitHubProvider({
-      clientId: clientId,
-      clientSecret: clientSecret,
+      clientId: gitHubId,
+      clientSecret: gitHubSecret,
       profile(profile) {
         return {
           id: profile.id,
