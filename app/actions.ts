@@ -3,13 +3,19 @@
 import { cookies } from "next/headers";
 
 import { prisma } from "@/prisma/prismaClient";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus, Prisma } from "@prisma/client";
+
+import { hashSync } from "bcrypt";
 
 import { createPayment, sendEmail } from "@/shared/lib";
+import { getUserSession } from "@/shared/lib/getUserSession";
 
 import { TypeCheckoutForm } from "@/shared/schemas";
 
-import { PayOrderTemplate } from "@/shared/components/shared/emailTemplates";
+import {
+  PayOrderTemplate,
+  VerificationUserTemplate,
+} from "@/shared/components/shared/emailTemplates";
 
 export const createOrder = async (data: TypeCheckoutForm) => {
   try {
@@ -116,5 +122,83 @@ export const createOrder = async (data: TypeCheckoutForm) => {
     return paymentUrl;
   } catch (error) {
     console.log("[ACTIONS] server error", error);
+  }
+};
+
+export const registerUser = async (body: Prisma.UserCreateInput) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (user) {
+      if (!user.verified) {
+        throw new Error("E-mail is not verified");
+      }
+
+      throw new Error("User already exists");
+    }
+
+    const createdUser = await prisma.user.create({
+      data: {
+        fullName: body.fullName,
+        email: body.email,
+        password: hashSync(body.password, 10),
+      },
+    });
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await prisma.verificationCode.create({
+      data: {
+        code,
+        userId: createdUser.id,
+      },
+    });
+
+    await sendEmail(
+      createdUser.email,
+      "Next Pizzeria / Verification code 🗝",
+      VerificationUserTemplate({
+        code,
+      })
+    );
+  } catch (error) {
+    console.log("Error [REGISTER_USER]", error);
+    throw error;
+  }
+};
+
+export const updateUserInfo = async (body: Prisma.UserUpdateInput) => {
+  try {
+    const currentUser = await getUserSession();
+
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+
+    const findUser = await prisma.user.findFirst({
+      where: {
+        id: Number(currentUser.id),
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: Number(currentUser.id),
+      },
+      data: {
+        fullName: body.fullName,
+        email: body.email,
+        password: body.password
+          ? hashSync(body.password as string, 10)
+          : findUser?.password,
+      },
+    });
+  } catch (error) {
+    console.log("Error [UPDATE_USER]", error);
+    throw error;
   }
 };

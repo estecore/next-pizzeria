@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import toast from "react-hot-toast";
 
-import { User } from "lucide-react";
-
 import { cn } from "@/shared/lib";
 
-import { CartButton, Container, SearchInput } from "./index";
-import { Button } from "../ui";
+import { CartButton, Container, ProfileButton, SearchInput } from "./index";
+import { AuthModal } from "./modals";
 
 export const Header = ({
   className,
@@ -24,12 +22,28 @@ export const Header = ({
   hasSearch?: boolean;
   hasCart?: boolean;
 }) => {
+  const router = useRouter();
+
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.has("paid")) {
+    if (!searchParams) return;
+
+    const messages: Record<string, string> = {
+      paid: "Order successfully paid! 🎉 Check your E-mail!",
+      verified: "Account successfully verified! 🎉",
+    };
+
+    const messageKey = ["paid", "verified"].find((key) =>
+      searchParams.has(key)
+    );
+    const message = messageKey && messages[messageKey];
+
+    if (message) {
       setTimeout(() => {
-        toast.success("Order successfully paid 🎉 Check your E-mail!");
+        router.replace("/");
+        toast.success(message);
       }, 500);
     }
   }, []);
@@ -56,10 +70,12 @@ export const Header = ({
         )}
 
         <div className="flex items-center gap-3">
-          <Button variant={"outline"} className="flex items-center gap-1">
-            <User size={16} />
-            Log in
-          </Button>
+          <AuthModal
+            open={openAuthModal}
+            onClose={() => setOpenAuthModal(false)}
+          />
+
+          <ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
 
           {hasCart && <CartButton />}
         </div>
