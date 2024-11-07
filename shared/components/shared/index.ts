@@ -32,3 +32,5 @@ export { ErrorText } from "./errorText";
 export { ClearButton } from "./clearButton";
 export { Providers } from "./providers";
 export { ProfileButton } from "./profileButton";
+export { InfoBlock } from "./infoBlock";
+export { ProfileForm } from "./profileForm";
